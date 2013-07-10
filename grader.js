@@ -42,14 +42,14 @@ var assertFileExists = function(infile) {
 
 var assertUrlExists = function(inUrl) {
     var instr = inUrl.toString();
-    rest.get(instr).on('complete', function(result, response)){
+    rest.get(instr).on('complete', function(result, response){
 	if (result instanceof Error) {
 	    console.error('Error: '+util.format(response.message));
 	    } else {
 		console.error("Wrote %s",TempFile)
 		fs.writeFileSync(TempFile, result);
 }   
-}
+});
     return intr;
 };
 
