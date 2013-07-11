@@ -41,16 +41,19 @@ var assertFileExists = function(infile) {
 };
 
 var assertUrlExists = function(inUrl) {
+    
     var instr = inUrl.toString();
     rest.get(instr).on('complete', function(result, response){
 	if (result instanceof Error) {
 	    console.error('Error: '+util.format(response.message));
 	    } else {
-		console.error("Wrote %s",TempFile)
-		fs.writeFileSync(TempFile, result);
-}   
+		fs.writeFileSync(TempFile,result);
+}
+	var checksJSON = checkHtmlFile(TempFile,program.checks);
+	var outJSON = JSON.stringify(checksJSON, null ,4);
+	console.log(outJSON);
 });
-    return intr;
+    return instr ;
 };
 
 var cheerioHtmlFile = function(htmlfile) {
@@ -84,10 +87,7 @@ if(require.main == module) {
 //        .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
     .option('-u, --url <URL>', 'URL of Heroku',clone(assertUrlExists))
         .parse(process.argv);
-if (program.url!=Null) {
-    var checkJson = checkHtmlFile(TempFile,program.checks);
-}
-else {
+if (program.url == null) {
     var checkJson = checkHtmlFile(program.file, program.checks);
 }
     var outJson = JSON.stringify(checkJson, null, 4);
